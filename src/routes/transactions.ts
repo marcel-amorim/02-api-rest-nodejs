@@ -4,12 +4,12 @@ import { z } from 'zod'
 import { knex } from '../database'
 import { checkSessionIdExists } from '../middlewares/check-session-id-exists'
 
-export default async function transactionsRoutes(server: FastifyInstance) {
-  server.addHook('preHandler', async (request) => {
-    console.log(`[${request.method}] ${request.url}`)
-  })
+export default async function transactionsRoutes(app: FastifyInstance) {
+  // app.addHook('preHandler', async (request) => {
+  //   console.log(`[${request.method}] ${request.url}`)
+  // })
 
-  server.get(
+  app.get(
     '/',
     {
       preHandler: [checkSessionIdExists],
@@ -25,7 +25,7 @@ export default async function transactionsRoutes(server: FastifyInstance) {
     },
   )
 
-  server.get(
+  app.get(
     '/:id',
     {
       preHandler: [checkSessionIdExists],
@@ -48,7 +48,7 @@ export default async function transactionsRoutes(server: FastifyInstance) {
     },
   )
 
-  server.get(
+  app.get(
     '/summary',
     {
       preHandler: [checkSessionIdExists],
@@ -65,7 +65,7 @@ export default async function transactionsRoutes(server: FastifyInstance) {
     },
   )
 
-  server.post('/', async (request, reply) => {
+  app.post('/', async (request, reply) => {
     const createTransactionSchema = z.object({
       title: z.string(),
       amount: z.number(),
